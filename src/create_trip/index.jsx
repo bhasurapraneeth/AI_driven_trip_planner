@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { SelectBudgetOptions, SelectTravelesList } from "@/constants/options";
+import { AI_PROMPT, SelectBudgetOptions, SelectTravelesList } from "@/constants/options";
+import { chatSession } from "@/service/AIModel";
 import React, { useEffect, useState } from "react";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
+import { toast } from "sonner";
 
 function CreateTrip() {
   const [place, setPlace] = useState();
@@ -16,13 +18,25 @@ function CreateTrip() {
     console.log(formData);
   }, [formData])
 
-  const OnGenerateTrip=()=>{
-    if(formData?.noOfDays>5)
+  const OnGenerateTrip=async()=>{
+    if(formData?.noOfDays>5&&!formData?.location||!formData?.budget||!formData?.traveler)
     {
-      alert('You can not plan more than 5 days');
+      toast("Please fill all the fields")
       return;
     }
-    console.log(formData);
+
+    const FINAL_PROMPT=AI_PROMPT
+    .replace('{Location}',formData?.location.label)
+    .replace('{totalDays}',formData?.noOfDays)
+    .replace('{traveler}',formData?.traveler)
+    .replace('{budget}',formData?.budget)
+    .replace('{totalDays}',formData?.noOfDays)
+
+    console.log(FINAL_PROMPT);
+
+    const result=await chatSession.sendMessage(FINAL_PROMPT);
+
+    console.log(result?.response?.text());
   }
 
   return (
@@ -48,6 +62,9 @@ function CreateTrip() {
                 handleInputChange("location", v);
               },
             }}
+            // autocompletionRequest={{
+            //   componentRestrictions: { country: 'LK' }
+            // }}
           />
         </div>
         <div>
