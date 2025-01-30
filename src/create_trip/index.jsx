@@ -115,11 +115,10 @@ function CreateTrip() {
   return (
     <div className="sm:px-10 md:px-32 lg:px-56 px-5 mt-10">
       <h2 className="font-bold text-3xl">
-        Tell us your travel preferences 🏕️🌴
+        Plan Your Dream Trip with Ease 🏕️🌴
       </h2>
       <p className="mt-3 text-gray-500 text-xl">
-        Just provide some basic information, and our trip planner will generate
-        a customized itinerary based on your preferences.
+        Tell us a little about your travel preferences, and let our AI-powered planner craft the perfect itinerary just for you!s.
       </p>
       <div className="mt-20 flex flex-col gap-10">
         <div>
@@ -135,9 +134,9 @@ function CreateTrip() {
                 handleInputChange("location", v);
               },
             }}
-            // autocompletionRequest={{
-            //   componentRestrictions: { country: 'LK' }
-            // }}
+            autocompletionRequest={{
+              componentRestrictions: { country: 'LK' }
+            }}
           />
         </div>
         <div>
